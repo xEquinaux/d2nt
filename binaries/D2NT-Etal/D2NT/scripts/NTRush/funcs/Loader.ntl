@@ -1,0 +1,96 @@
+var Rev = "ERusher v1.1";
+var etal = this;
+Include("NTRush/funcs/Message.ntl");
+Include("NTRush/funcs/File.ntl");
+Include("NTRush/funcs/Tracker.ntl");
+
+var Loader = {
+	scriptlist: [],
+
+	Check: function () {
+		return SendCopyData("D2NT Manager", null, (9 << 16) | 0, "Loader file loaded...");
+	},
+
+	Run: function () {
+		this.Build();
+		this.Load();
+	},
+
+	RunFailed: function () {
+		this.Build(true);
+		this.Load();
+	},
+
+	Build: function (failed) {
+		var _script, _sub, _trig,
+			_check = false;
+
+		_script = GetScript();
+		if (_script) {
+			do {
+				_sub = _script.name;
+				if (Scripts.hasOwnProperty(_sub.split(".")[0])) {
+					if (failed) {
+						if (_sub.split(".")[0] === Tracker.Get("status")) {
+							_trig = true;
+						}
+						if (_trig) {
+							this.scriptlist.push(_sub.split(".")[0]);
+						}
+					} else {
+						this.scriptlist.push(_sub.split(".")[0]);
+						if (_check) {
+							File.Log("NTRush/scriptlist_push.txt", _sub.split(".")[0]);
+						}
+					}
+				}
+			} while (_script.GetNext());
+		}
+	},
+
+	Load: function () {
+		var i, _stat, towned;
+
+		if (this.scriptlist.length < 1) {
+			Print(COLOR_8 + "scriptlist object is empty");
+		}
+
+ScriptLoop:
+		for (i in Scripts) {
+			if (Scripts.hasOwnProperty(i) && this.scriptlist.indexOf(i) > -1 && Scripts[i]) {
+				Include("NTRush/rushbots/" + i + ".ntj");
+
+				if (typeof (etal[i]) === "function") {
+					if (i !== "Command") {
+						try {
+							towned = NTTM_CheckAct();
+						} catch (e1) {
+							Print(COLOR_8 + "Failed to go to town.");
+						}
+					}
+
+					if (towned) {
+						try {
+							Config.Load();
+							//Tracker.UpdateStats("status", i);
+							SetStatusText(Rev + " Running " + i);
+							NTTMGR_TownManager();
+							etal[i]();
+							_stat = true;
+						} catch (e) {
+							Print(COLOR_8 + "Failed to run " + i + " script");
+						}
+					}
+				} else {
+					Print(COLOR_8 + "Error in script " + i + ", skipping");
+				}
+
+				//if (!_stat) {
+					//Tracker.UpdateStats("done", false);
+					//Print(COLOR_4 + "rush failed");
+					//break;
+				//}
+			}
+		}
+	}
+};

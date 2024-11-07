@@ -1,0 +1,70 @@
+function Ancients()
+{
+	var _Altar, _Korlic, _Talic, _Madawc ;
+
+	NTA_Initialize();
+
+	if (!NTTM_TownMove("waypoint")) {
+		return false;
+	}
+
+	if (!NTM_TakeWaypoint(118)) {
+		return false;
+	}
+
+	NTP_DoPrecast(true);
+
+	if (!NTM_MoveToStair(me.areaid, 120)) {
+		return false;
+	}
+
+	if (!NTM_TakeStair(120)) {
+		return false;
+	}
+		
+	if (!NTM_MoveTo(me.areaid, 10057, 12645)) {
+		return false;
+	}
+		
+	Say(Messages.ancientsup);
+			
+	NTM_MakeTP();
+			
+	while (!NTC_IsQuesterIn()) {
+		NTC_Delay(500);
+	}
+
+	NTA_ClearPosition(10);
+
+	NTP_DoPrecast(true);	
+
+	_Altar = NTC_FindUnit(NTC_UNIT_OBJECT, 546);
+
+	if (_Altar) {
+		if (NTM_MoveTo(_Altar.areaid, _Altar.x+3, _Altar.y+3)) {
+			NTC_OpenChest(_Altar);
+			me.Cancel(0);
+			NTC_Delay(100);
+			me.Cancel(0);
+		}
+	}
+
+	_Korlic = NTC_FindUnit(NTC_UNIT_OBJECT, 474);
+	_Talic = NTC_FindUnit(NTC_UNIT_OBJECT, 475);
+	_Madawc = NTC_FindUnit(NTC_UNIT_OBJECT, 476);
+
+	while (_Korlic.mode == 4 || _Talic.mode == 4 || _Madawc.mode == 4) {
+		NTA_ClearPosition(40);
+		NTC_PingDelay(200);
+	}	
+		
+	if (!NTM_MoveTo(me.areaid, 10057, 12645)) {
+		return false;
+	}
+
+	Say(Messages.ancientsdown);
+
+	NTM_MakeTP(true);
+
+	return true;
+}

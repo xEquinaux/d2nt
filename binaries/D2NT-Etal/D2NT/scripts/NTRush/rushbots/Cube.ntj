@@ -1,0 +1,67 @@
+function Cube()
+{
+	NTA_Initialize();
+
+	if (me.diff == 0) {
+		if (!NTTM_TownMove("waypoint")) {
+			return false;
+		}
+
+		if (!NTM_TakeWaypoint(57)) {
+			return false;
+		}
+
+		NTP_DoPrecast(true);		
+
+		if (!NTM_MoveToStair(me.areaid, 60)) {
+			return false;
+		}
+
+		if (!NTM_TakeStair(60)) {
+			return false;
+		}
+
+		NTP_DoPrecast(true);
+
+		if (!NTM_MoveToPresetUnit(me.areaid, NTC_UNIT_OBJECT, 354, -5, -5)) {
+			return false;
+		}
+
+		NTA_ClearPosition(30);
+
+		NTSI_PickItems();
+
+		_Cube = NTC_FindUnit(NTC_UNIT_OBJECT, 354);
+
+		if (_Cube) {	
+			if (NTM_MoveTo(me.areaid, _Cube.x+3, _Cube.y)) {
+				NTA_ClearPosition(30);
+				NTSI_PickItems();
+			}
+
+			if (NTC_OpenChest(_Cube)) {
+				NTC_PingDelay(100);
+				NTSI_PickItems();
+			}
+			NTM_MoveTo(me.areaid, _Cube.x+3, _Cube.y);
+			NTA_ClearPosition(30);
+
+			NTSI_PickItems();
+		}
+		
+		NTM_MoveTo(me.areaid, _Cube.x-5, _Cube.y-5);
+		NTM_MakeTP();
+
+		Say(Messages.cubeup);
+
+		while (!NTC_IsQuesterIn()) {
+			NTC_TPGuard(30);
+			NTM_MoveTo(me.areaid, _Cube.x-5, _Cube.y-5);
+		}
+
+		NTSI_PickItems();
+
+		NTM_UsePortal("BluePortal", 40, me.charname);
+	}
+	return true;
+}

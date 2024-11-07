@@ -1,0 +1,172 @@
+function Duriel()
+{
+	var _tombs, _harem;
+
+	NTA_Initialize();
+
+	if (!NTTM_TownMove("waypoint")) {
+		return false;
+	}
+
+	if (!NTM_TakeWaypoint(46)) {
+		return false;
+	}
+
+	NTP_DoPrecast(true);
+
+	_tombs = GetRoom();
+
+	if (!_tombs) {
+		return false;
+	}
+
+	if (!NTM_MoveToPresetUnit(me.areaid, NTC_UNIT_TILE, _tombs.correcttomb-28)) {
+		return false;
+	}
+
+	_tileunit = NTC_FindUnit(NTC_UNIT_TILE, _tombs.correcttomb-28);
+
+	if (!_tileunit) {
+		return false;
+	}
+
+	if (!NTM_TakeStair(_tileunit.subareaid)) {
+		return false;
+	}
+
+	if (!NTM_MoveToPresetUnit(me.areaid, NTC_UNIT_OBJECT, 152, -2, 2)) {
+		return false;
+	}
+
+	if (NTA_ClearPosition()) {
+		NTSI_PickItems();
+	} else {
+		NTC_PingDelay(1500);
+	}
+
+	NTA_ClearPosition(40);
+
+	NTSI_PickItems();
+		
+	_orifice = NTC_FindUnit(NTC_UNIT_OBJECT, 152);
+
+	if (_orifice) {
+		NTM_MoveTo(_orifice.areaid, _orifice.x-3, _orifice.y);
+
+		NTC_Delay(150);
+
+		Say(Messages.durychamber);
+
+		NTM_MakeTP();
+
+		while (!NTC_IsQuesterIn()) {
+			NTC_TPGuard(20);
+		}
+
+		while (!NTC_FindUnit(NTC_UNIT_OBJECT, 100)) {
+			NTA_ClearPosition(20);
+			NTM_MoveTo(_orifice.areaid, _orifice.x-3, _orifice.y);
+				NTC_Delay(500);
+		}
+
+		if (!NTM_TakeUnit(NTC_UNIT_OBJECT, 100)) {
+			return false;
+		}
+
+		if (NTC_FindUnit(NTC_UNIT_MONSTER, 211)) {
+			if (!NTA_KillMonster(211)) {
+				return false;
+			}
+		}
+
+		NTSI_PickItems();
+
+		NTC_Delay(2000);
+
+		if (!MoveToTyreal()) {
+			NTM_MakeTP();
+		}
+
+		Say(Messages.durydown);
+
+		NTM_MakeTP(true);	
+	}
+	
+	NTC_PutSkill(115, NTC_HAND_RIGHT);	
+			
+	if (NTConfig_TpHarem) {
+		if (!NTTM_TownMove("waypoint")) {
+			return false;
+		}
+
+		if (!NTM_TakeWaypoint(52)) {
+			return false;
+		}
+
+		if (!NTM_MoveToStair(me.areaid, 51)) {
+			return false;
+		}
+
+		if (!NTM_TakeStair(51)) {
+			return false;
+		}
+
+		_harem = [10031, 5608, 10058, 5610, 10084, 5611, 10109, 5612, 10133, 5613, 10148, 5603, 10143, 5599];
+
+		for (i = 0; i < _harem.length; i += 2) {
+			for (n = 0 ; n < 2 ; n++) {
+				if (!NTM_TeleportTo(_harem[i]+Random(-n, n), _harem[i+1]+Random(-n, n))) {
+					return false;
+				}
+			}
+		}
+
+		if (!NTM_TakeStair(50)) {
+			return false;
+		}
+		
+		if (!NTM_MoveTo(me.areaid, 10022, 5046)) {
+			return false;
+		}
+			
+		NTM_MakeTP(true);
+
+		NTC_PingDelay(100);
+			
+		Say(Messages.palacetp);
+	}
+
+	if (me.classid ==  NTC_CHAR_CLASS_PALADIN) {
+		NTC_PutSkill(115, NTC_HAND_RIGHT);
+	}
+
+	if (!NTTM_TownMove("waypoint")) {
+		return false;
+	}
+
+	while (!NTC_IsGroupInAct(3)) {
+		Delay(500);
+	}
+
+	if (!NTM_TakeWaypoint(75)) {
+		return false;
+	}
+
+	NTC_Delay(2000);
+
+	return true;
+}
+
+function MoveToTyreal() {
+	var i,
+		_movex = [22629, 22612, 22579, 22577, 22577],
+		_movey = [15712, 15709, 15705, 15649, 15614];
+
+	for (i = 0; i < _movex.length; i += 1) {
+		if (!NTM_MoveTo(me.areaid, _movex[i], _movey[i])) {
+			return false;
+		}
+	}
+	return true;
+}
+		

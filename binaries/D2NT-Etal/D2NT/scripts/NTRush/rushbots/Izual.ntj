@@ -1,0 +1,128 @@
+function Izual()
+{
+	var _izzy;
+
+	NTA_Initialize();
+
+	if (!NTTM_TownMove("waypoint")) {
+		return false;
+	}
+
+	if (!NTM_TakeWaypoint(106)) {
+		return false;
+	}
+
+	NTP_DoPrecast(true);
+
+	_izzy = GetPresetUnits(105, NTC_UNIT_MONSTER, 256);
+
+	NT_MoveSafeIzzy(me.areaid, _izzy[0].roomx*5+_izzy[0].x, _izzy[0].roomy*5+_izzy[0].y);
+
+	var xx = me.x; var yy = me.y
+	NTA_ClearPosition(10);
+	NTM_MoveTo(me.areaid, xx, yy);
+
+	NTM_MakeTP();
+	
+	Say(Messages.izzyup);
+
+	while (!NTC_IsQuesterIn()) {
+		NTC_TPGuard(20);
+		NTM_MoveTo(me.areaid, xx, yy);
+	}
+
+	NTA_ClearPosition(20);
+
+	NTM_MoveTo(105, _izzy[0].roomx*5+_izzy[0].x, _izzy[0].roomy*5+_izzy[0].y, 0, true);
+
+	if (!NTA_KillMonster(256)) {
+		return false;
+	}
+
+	NTSI_PickItems();
+
+	NTM_MakeTP();
+
+	Say(Messages.izzydown);
+
+	NTA_ClearPosition(10);
+
+	NTSI_PickItems();
+
+	NTM_UsePortal("BluePortal", 103, me.charname);
+
+	return true;
+}
+
+function NT_MoveSafeIzzy(areaid, x, y, retry, clearpath)
+{
+	var i, n, _teleport, _path, _izzy,
+		_retry = 0;
+
+	if (x == me.x && y == me.y) {
+		return true;
+	}
+
+	if (retry === undefined) {
+		retry = 3;
+	}
+
+	if (clearpath === undefined) {
+		clearpath = false;
+	}
+
+	if (NTC_InTown() || NTC_GetSkillLevel(54) < 1) {
+		_teleport = false;
+	} else {
+		_teleport = true;
+	}
+
+	_path = GetPath(areaid, me.x, me.y, x, y, _teleport);
+
+	if (!_path) {
+		return false;
+	}
+
+	for (i = 0 ; i < _path.length ; i++) {
+		for (n = 0 ; n < 2 ; n++) {
+			if (_teleport) {
+				if (NTM_TeleportTo(_path[i][0]+Random(-n, n), _path[i][1]+Random(-n, n))) {
+					break;
+				}
+			} else {
+				if (NTM_WalkTo(_path[i][0], _path[i][1])) {
+					break;
+				}
+			}
+		}
+
+		_izzy = GetPresetUnits(105, NTC_UNIT_MONSTER, 256);
+		if (GetDistance(me.x, me.y, _izzy[0].roomx*5+_izzy[0].x, _izzy[0].roomy*5+_izzy[0].y) <= 60) {
+			return true;
+		}
+
+		if (n < 2) {
+			if (clearpath) {
+				if (!NTA_ClearPosition(20, true, 2)) {
+					return false;
+				}
+
+				NTP_DoPrecast(false);
+
+				NTM_MoveTo(me.areaid, _path[i][0], _path[i][1], 1);
+			}
+		} else if (_retry < retry) {
+			_path = GetPath(areaid, me.x, me.y, x, y, _teleport);
+
+			if (!_path) {
+				return false;
+			}
+
+			i = -1;
+			_retry++;
+		} else {
+			return false;
+		}
+	}
+	return true;
+}

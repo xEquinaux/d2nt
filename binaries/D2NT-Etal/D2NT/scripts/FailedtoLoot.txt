@@ -1,0 +1,17 @@
+[Wed 11/06/24 00:47:45] Could not loot: Venom Lord [362] (Location: 108) States:: State(1): 2<--> State(105): 512<--> 
+[Wed 11/06/24 00:47:54] Could not loot: Venom Lord [362] (Location: 108) States:: State(1): 2<--> State(105): 512<--> 
+[Wed 11/06/24 00:47:57] Could not loot: Venom Lord [362] (Location: 108) States:: State(1): 2<--> State(105): 512<--> 
+[Wed 11/06/24 00:48:07] Could not loot: Venom Lord [362] (Location: 108) States:: State(1): 2<--> State(105): 512<--> 
+[Wed 11/06/24 00:48:09] Could not loot: Venom Lord [362] (Location: 108) States:: State(1): 2<--> State(105): 512<--> 
+[Wed 11/06/24 00:48:14] Could not loot: Venom Lord [362] (Location: 108) States:: State(1): 2<--> State(105): 512<--> 
+[Wed 11/06/24 00:49:32] Could not loot: Doom Knight [310] (Location: 108) States:: State(1): 2<--> State(105): 512<--> 
+[Wed 11/06/24 00:49:35] Could not loot: Doom Knight [310] (Location: 108) States:: State(1): 2<--> State(105): 512<--> 
+[Wed 11/06/24 00:49:40] Could not loot: Doom Knight [310] (Location: 108) States:: State(1): 2<--> State(105): 512<--> 
+[Wed 11/06/24 00:49:43] Could not loot: Venom Lord [362] (Location: 108) States:: State(1): 2<--> State(105): 512<--> 
+[Wed 11/06/24 00:49:46] Could not loot: Venom Lord [362] (Location: 108) States:: State(1): 2<--> State(105): 512<--> 
+[Wed 11/06/24 00:50:00] Could not loot: Doom Knight [310] (Location: 108) States:: State(1): 2<--> State(105): 512<--> 
+[Wed 11/06/24 00:50:03] Could not loot: Doom Knight [310] (Location: 108) States:: State(1): 2<--> State(105): 512<--> 
+[Wed 11/06/24 00:50:06] Could not loot: Venom Lord [362] (Location: 108) States:: State(1): 2<--> State(105): 512<--> 
+[Wed 11/06/24 00:50:09] Could not loot: Doom Knight [310] (Location: 108) States:: State(1): 2<--> State(105): 512<--> 
+[Wed 11/06/24 00:50:12] Could not loot: Venom Lord [362] (Location: 108) States:: State(1): 2<--> State(105): 512<--> 
+[Wed 11/06/24 00:50:14] Could not loot: Venom Lord [362] (Location: 108) States:: State(1): 2<--> State(105): 512<--> 
